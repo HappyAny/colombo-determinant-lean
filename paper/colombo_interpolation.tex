@@ -1,0 +1,610 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{lmroman10-regular.otf}[
+  BoldFont=lmroman10-bold.otf,
+  ItalicFont=lmroman10-italic.otf,
+  BoldItalicFont=lmroman10-bolditalic.otf]
+\setsansfont{lmsans10-regular.otf}[BoldFont=lmsans10-bold.otf]
+\setmonofont{lmmono10-regular.otf}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,enumitem,microtype,xurl}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Directional differentiation and interpolation}
+\fancyhead[R]{\small Colombo's determinant problem}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{topsep=4pt,itemsep=3pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\RP}{\mathbb {RP}^{1}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Pf}{\operatorname{Pf}}
+\newcommand{\pdeg}{\operatorname{deg}}
+\newcommand{\lean}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\dd}{\mathcal D}
+\hypersetup{
+  pdftitle={Directional differentiation and interpolation for Colombo's determinant problem},
+  pdfsubject={A complete determinant criterion with a single-file Lean proof},
+  pdfkeywords={difference-power matrix, projective roots, Rolle theorem, interpolation, Lean}
+}
+\title{\bfseries Directional differentiation and interpolation\\
+for Colombo's determinant problem}
+\author{}
+\date{6 September 2026 \quad\textnormal{\small Working draft}}
+
+\begin{document}
+\maketitle
+\thispagestyle{plain}
+
+\begin{abstract}
+For distinct real numbers $x_1,\ldots,x_N$, we give a self-contained proof that
+the matrix $[(x_j-x_i)^D]$ is nonsingular exactly when $N\le D+1$ and at least
+one of $N,D$ is even. The proof is organized around an auxiliary polynomial
+whose values have the signs of a putative kernel vector. Its real roots select
+directional derivatives that transform the associated homogeneous power sum
+into a strictly positive sum of even powers. A projective Rolle inequality
+then bounds the original root count. Ordinary interpolation treats opposite
+parities. When both parameters are even, a skew-symmetric derivative pairing
+annihilates the highest interpolation coefficient and lowers the bound by two.
+This construction gives a common proof framework for all nonsingular cases
+and closely follows an accompanying single-file Lean formalization. We explain
+its relation to Ma's Pfaffian positivity method and to the algebraic root-count
+method of Li, Tie, Wang, and Liu, including the common parity obstruction in
+the odd-exponent case.
+\end{abstract}
+
+\noindent\textbf{Keywords.} Difference-power matrix; real projective roots;
+directional derivative; Lagrange interpolation; formal verification.
+
+\section{The criterion and the proof architecture}
+
+For integers $N\ge2$, $D\ge1$, and pairwise distinct real nodes
+$x=(x_1,\ldots,x_N)$, put
+\begin{equation}\label{eq:matrix}
+ A_{N,D}(x)=\bigl[(x_j-x_i)^D\bigr]_{i,j=1}^{N}.
+\end{equation}
+We prove the following complete criterion.
+
+\begin{theorem}\label{thm:main}
+For the matrix in \eqref{eq:matrix},
+\begin{equation}\label{eq:criterion}
+ \det A_{N,D}(x)\ne0
+ \quad\Longleftrightarrow\quad
+ N\le D+1\ \text{and}\ (N\text{ is even or }D\text{ is even}).
+\end{equation}
+\end{theorem}
+
+The criterion is already stated in Ma's treatment of Colombo's problem
+\cite{Ma}. Li, Tie, Wang, and Liu give an algebraic proof of the remaining
+odd-exponent branch for even matrix size \cite{Li}. Both papers combine that
+branch with known results for even exponents. The present paper concerns a
+different organization of the proof, particularly the construction that
+closes the even-size, even-exponent case. The numerical criterion itself is
+not presented as a new result.
+
+Suppose that $A_{N,D}(x)c=0$ for a nonzero vector $c$. The associated polynomial
+\begin{equation}\label{eq:kernel-polynomial}
+ f(t)=\sum_{j=1}^{N}c_j(t-x_j)^D
+\end{equation}
+vanishes at every node. We will bound its real roots by constructing a
+polynomial $g$ with
+\begin{equation}\label{eq:alignment}
+ c_jg(x_j)>0\qquad\text{whenever }c_j\ne0.
+\end{equation}
+The basic estimate is that $\deg g\le m\le D$ and $D-m$ even imply at most
+$m$ projective real roots, provided at least two distinct nodes occur in the
+support. The same estimate establishes that $f$ is nonzero, so no separate
+Vandermonde independence argument is needed in the sufficiency proof.
+
+There are two applications. Interpolating $g(x_j)=c_j$ gives $\deg g\le N-1$
+and settles opposite parities. In the remaining case, both $N$ and $D$ are
+even. The initial root bound forces a factorization $f=Pq$, where
+$P(t)=\prod_j(t-x_j)$ and $q$ has no real root. A derivative pairing then
+produces an aligned interpolation polynomial of degree at most $N-2$.
+This last reduction is the main construction emphasized here.
+
+\section{Projective root counts and directional Rolle}
+
+For a nonzero real polynomial $p$ with $\deg p\le d$, let
+\begin{equation}\label{eq:root-count}
+ R_d(p)=Z_\R(p)+d-\deg p,
+\end{equation}
+where $Z_\R(p)$ counts real roots with multiplicity. Equivalently, $R_d(p)$
+counts the zeros of the degree-$d$ homogenization
+\[
+ p^{[d]}(u,v)=v^dp(u/v)
+\]
+on $\RP$, with multiplicity. The displayed expression is understood as a
+homogeneous polynomial, including at $v=0$. The term $d-\deg p$ is exactly
+the multiplicity at $[1:0]$. A nonzero form of degree zero has root count zero.
+For a nonzero homogeneous binary form $F$, we write $R(F)$ for this count.
+
+For $w=(a,b)\ne(0,0)$, define
+\[
+ \dd_wF=a\,\partial_uF+b\,\partial_vF.
+\]
+
+\begin{lemma}[Projective Rolle inequality]\label{lem:rolle}
+Let $F$ be a real homogeneous binary form of degree $d\ge1$. If
+$\dd_wF\ne0$, then $F\ne0$ and
+\begin{equation}\label{eq:rolle}
+ R(F)\le R(\dd_wF)+1.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Nonvanishing of the derivative implies $F\ne0$. An invertible real linear
+change of coordinates preserves projective root multiplicities and can send
+the direction of differentiation to $\partial_u$. In those coordinates,
+write
+\[
+ F(u,v)=v^\ell G(u,v),\qquad G(1,0)\ne0,
+ \qquad g(t)=G(t,1).
+\]
+Then $\deg g=d-\ell$. The derivative is nonzero only if $d-\ell\ge1$.
+Its factor at infinity has the same multiplicity $\ell$, since
+$\partial_uG(1,0)=(d-\ell)G(1,0)\ne0$. Thus
+\[
+ R(F)=\ell+Z_\R(g),\qquad
+ R(\partial_uF)=\ell+Z_\R(g').
+\]
+The ordinary Rolle theorem, with multiplicities, gives
+$Z_\R(g')\ge Z_\R(g)-1$. Indeed, a root of multiplicity $r$ contributes
+at least $r-1$ to the derivative, and between any two successive distinct
+roots there is an additional derivative root. If $g$ has no real root, the
+inequality is immediate. This proves \eqref{eq:rolle}.
+\end{proof}
+
+\begin{lemma}[A positive terminal derivative]\label{lem:terminal}
+Suppose that $k$ successive nonzero real directional derivatives transform
+a degree-$d$ form $F$ into a nonzero scalar multiple of a form that is
+strictly positive on $\R^2\setminus\{0\}$. Then $F\ne0$ and $R(F)\le k$.
+\end{lemma}
+
+\begin{proof}
+The terminal form has no projective real zero. Its nonvanishing implies
+nonvanishing of every preceding form. Apply Lemma~\ref{lem:rolle} backwards
+through the $k$ derivatives. The case $k=0$ is included.
+\end{proof}
+
+The directional derivative needed below has the simple form
+\begin{equation}\label{eq:directional-power}
+ \dd_{(a,1)}(u-xv)^d=d(a-x)(u-xv)^{d-1}.
+\end{equation}
+It lowers the exponent while multiplying the coefficient by a linear
+function of the node. Choosing that linear function is the essential degree
+of freedom in the argument.
+
+\section{A root bound from an aligned polynomial}
+
+\begin{theorem}[Aligned polynomial root bound]\label{thm:aligned}
+Let $x_1,\ldots,x_N$ be distinct real numbers, and let $c\in\R^N$ have at
+least two nonzero coordinates. Let $0\le m\le d$ with $d-m$ even. Suppose
+that a real polynomial $g$ satisfies $\deg g\le m$ and
+\[
+ c_jg(x_j)>0\qquad(j\in\supp c).
+\]
+Then the polynomial
+$f(t)=\sum_jc_j(t-x_j)^d$ is nonzero, and
+\begin{equation}\label{eq:aligned-bound}
+ R_d(f)\le m.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The sign condition implies $g\ne0$. Remove all real roots of $g$, counting
+multiplicities, to write
+\[
+ g(t)=Q(t)\prod_{\nu=1}^{\ell}(t-a_\nu),
+ \qquad Q(t)\ne0\quad(t\in\R),
+ \qquad \ell\le\deg g\le m.
+\]
+By continuity, $Q$ has constant sign. Choose $\sigma\in\{1,-1\}$ with that
+sign and put $h_0(t)=\sigma\prod_\nu(t-a_\nu)$. Then
+\[
+ c_jh_0(x_j)=c_jg(x_j)\,\frac{\sigma}{Q(x_j)}>0
+ \qquad(j\in\supp c).
+\]
+If $d-\ell$ is even, set $h=h_0$ and $k=\ell$. Otherwise choose
+$b>\max_jx_j$ and set
+\[
+ h(t)=(b-t)h_0(t),\qquad k=\ell+1.
+\]
+In the latter case $\ell<m$, because $\ell=m$ would contradict the
+assumption that $d-m$ is even. In either case we have
+\begin{equation}\label{eq:split-aligned}
+ h(t)=\kappa\prod_{\nu=1}^{k}(t-b_\nu),\quad
+ k\le m,\quad d-k\text{ even},\quad
+ c_jh(x_j)>0\ (j\in\supp c),
+\end{equation}
+where $\kappa\ne0$ and all $b_\nu$ are real. Repetitions among the $b_\nu$
+are allowed. No $b_\nu$ is an active node, by the strict sign condition.
+
+Consider the homogeneous form
+\[
+ F(u,v)=\sum_jc_j(u-x_jv)^d.
+\]
+Repeated use of \eqref{eq:directional-power} gives
+\begin{align}\label{eq:terminal-form}
+ \dd_{(b_k,1)}\cdots\dd_{(b_1,1)}F
+ &=\frac{d!}{(d-k)!}\sum_jc_j
+        \prod_{\nu=1}^{k}(b_\nu-x_j)(u-x_jv)^{d-k}\notag\\
+ &=\frac{d!}{(d-k)!}\frac{(-1)^k}{\kappa}
+        \sum_jc_jh(x_j)(u-x_jv)^{d-k}.
+\end{align}
+The last sum is strictly positive at every nonzero $(u,v)$. Its nonzero
+coefficients are positive and its exponent is even. If the exponent is
+positive, two linear forms $u-x_iv$ and $u-x_jv$ with distinct nodes cannot
+both vanish at a nonzero point. If the exponent is zero, the sum is a
+positive constant. Lemma~\ref{lem:terminal} now gives $F\ne0$ and
+$R(F)\le k\le m$. Dehomogenization identifies this statement with
+\eqref{eq:aligned-bound}.
+\end{proof}
+
+\begin{remark}\label{rem:role}
+The theorem uses the degree of a polynomial encoding the coefficient signs,
+not merely the number of summands. Its terminal positivity proves
+nonvanishing as well as a root bound. It is a formulation of a classical
+sign-control mechanism, closely related to the root-count perspective of
+Sylvester and Reznick \cite{Reznick}; no claim of a new general rule of signs
+is needed for its use here.
+\end{remark}
+
+\section{Proof of the complete determinant criterion}
+
+\subsection{The two necessary conditions}
+
+Let $V$ be the $N\times(D+1)$ matrix with $V_{ik}=x_i^k$, indexed by
+$0\le k\le D$. Let $C$ be the $(D+1)\times(D+1)$ matrix whose only nonzero
+entries are
+\[
+ C_{k,D-k}=(-1)^k\binom Dk.
+\]
+The binomial theorem gives
+\begin{equation}\label{eq:factorization}
+ A_{N,D}(x)=VCV^{\mathsf T},\qquad \rank A_{N,D}(x)\le D+1.
+\end{equation}
+Thus $N>D+1$ forces singularity. Also
+\[
+ A_{N,D}(x)^{\mathsf T}=(-1)^D A_{N,D}(x).
+\]
+If $N$ and $D$ are both odd, taking determinants gives
+$\det A=-\det A$, hence $\det A=0$. These are precisely the two obstructions
+on the right side of \eqref{eq:criterion}.
+
+\subsection{The kernel polynomial and its support}
+
+For the rest of the proof assume $N\le D+1$, and suppose, for a
+contradiction, that $Ac=0$ for some $c\ne0$. The support of $c$ contains
+at least two indices. Otherwise, if only $c_j$ is nonzero, any row $i\ne j$
+would give
+\[
+ (Ac)_i=c_j(x_j-x_i)^D\ne0,
+\]
+contradicting the kernel equation.
+For the polynomial \eqref{eq:kernel-polynomial},
+\begin{equation}\label{eq:node-roots}
+ f(x_i)=(-1)^D(Ac)_i=0\qquad(1\le i\le N).
+\end{equation}
+Consequently, once $f\ne0$ has been established, $R_D(f)\ge N$.
+
+\subsection{Opposite parities}
+
+Suppose that $N$ and $D$ have opposite parity. Let $g$ be the Lagrange
+interpolation polynomial satisfying
+\[
+ \deg g\le N-1,\qquad g(x_i)=c_i.
+\]
+At every active node, $c_ig(x_i)=c_i^2>0$. Apply
+Theorem~\ref{thm:aligned} with $m=N-1$. Its hypotheses hold because
+$N-1\le D$ and $D-(N-1)$ is even. It follows that $f\ne0$ and
+\[
+ N\le R_D(f)\le N-1,
+\]
+a contradiction. This argument includes the threshold $D=N-1$ and both
+opposite-parity choices.
+
+\subsection{Even size and even exponent: interpolation loses a degree}
+
+Suppose now that $N$ and $D$ are even. Since $N\le D+1$, parity gives
+$N\le D$. Start with the same interpolation polynomial $g_0(x_i)=c_i$,
+but apply Theorem~\ref{thm:aligned} with $m=N$. We obtain $f\ne0$ and
+\[
+ N\le Z_\R(f)\le R_D(f)\le N.
+\]
+All inequalities are equalities. In particular, $\deg f=D$, the nodes are
+all the real roots of $f$, and each is simple. We can therefore write
+\begin{equation}\label{eq:rootless-factor}
+ f=Pq,\qquad P(t)=\prod_{i=1}^{N}(t-x_i),
+ \qquad q(t)\ne0\quad(t\in\R).
+\end{equation}
+Set
+\begin{equation}\label{eq:weights}
+ w_i=P'(x_i)=\prod_{j\ne i}(x_i-x_j)\ne0.
+\end{equation}
+Differentiating \eqref{eq:rootless-factor} at a node gives
+\begin{equation}\label{eq:derivative-values}
+ f'(x_i)=w_iq(x_i).
+\end{equation}
+
+The exponent $D-1$ is odd. Exchanging the indices in a finite double sum
+therefore proves the identity
+\begin{equation}\label{eq:skew-pairing}
+ \sum_{i=1}^{N}c_if'(x_i)
+ =D\sum_{i,j=1}^{N}c_ic_j(x_i-x_j)^{D-1}=0.
+\end{equation}
+This identity is valid for every vector $c$; the kernel equation is not
+needed for the cancellation itself.
+
+Interpolate the new data
+\begin{equation}\label{eq:new-data}
+ g(x_i)=c_if'(x_i)w_i,\qquad \deg g\le N-1.
+\end{equation}
+The Lagrange formula reads
+\[
+ g(t)=\sum_i g(x_i)\frac{P(t)}{(t-x_i)w_i},
+\]
+where each quotient $P(t)/(t-x_i)$ is a monic polynomial of degree $N-1$.
+Taking the coefficient of $t^{N-1}$ and using \eqref{eq:skew-pairing},
+\begin{equation}\label{eq:degree-drop}
+ [t^{N-1}]g=\sum_i\frac{g(x_i)}{w_i}
+ =\sum_i c_if'(x_i)=0.
+\end{equation}
+Hence $\deg g\le N-2$, with the usual convention for the zero polynomial.
+
+Since $q$ has no real root, $q(0)q(x_i)>0$ for every $i$. The scaled
+polynomial $h=q(0)g$ has degree at most $N-2$, and
+\begin{align}\label{eq:new-alignment}
+ c_ih(x_i)
+ &=q(0)c_i^2f'(x_i)w_i\notag\\
+ &=q(0)q(x_i)(c_iw_i)^2>0\qquad(i\in\supp c).
+\end{align}
+Theorem~\ref{thm:aligned} applies again, now with $m=N-2$, because
+$D-(N-2)$ is even. It gives
+\[
+ N\le R_D(f)\le N-2,
+\]
+the final contradiction. No ordering of the nodes is used in this
+construction. The case $N=2$ is included: the last auxiliary polynomial
+then has degree at most zero.
+
+\begin{proof}[Completion of Theorem~\ref{thm:main}]
+Equation~\eqref{eq:factorization} and odd-dimensional skew-symmetry give
+necessity. Under the stated conditions, the opposite-parity and even-even
+arguments exclude every nonzero kernel vector. A square matrix over $\R$
+with trivial kernel has nonzero determinant, proving sufficiency.
+\end{proof}
+
+\section{Comparison with the two existing approaches}
+
+\subsection{Ma: positivity of a Pfaffian integral}
+
+Ma's odd-exponent proof \cite{Ma} constructs a strict sign for the Pfaffian.
+For ordered $N=2r$ nodes, its output is
+\[
+ (-1)^{\binom r2}\Pf(A_{N,D}(x))>0.
+\]
+The proof passes through paired determinants of truncated powers, B-spline
+and Marsden factorizations, total nonnegativity, Volterra propagation, and a
+Beta--de Bruijn integral representation. Positivity on an explicit region
+then gives a strictly positive integral.
+
+The proof above excludes a kernel vector through a polynomial root bound.
+Its positive object is the terminal even-power sum in
+\eqref{eq:terminal-form}. This avoids constructing the paired determinants
+and integral representation. Ma's formalization also establishes intermediate
+positivity statements and the explicit Pfaffian sign \cite{MaCode}; those
+are additional outputs beyond the nonvanishing interface formalized here.
+
+\subsection{Li, Tie, Wang, and Liu: a closely related root-count contradiction}
+
+Li et al.\ \cite{Li} associate a real binary form to a kernel vector and
+apply the Sylvester--Reznick bound relating real projective factors to the
+length of a power-sum representation. For $N$ even and $D\ge N+1$ odd,
+their argument has the shape
+\[
+ N+1\le R_D(f)\le |\supp c|\le N.
+\]
+Our corresponding argument has the shape $N\le R_D(f)\le N-1$. These
+inequalities express the same parity obstruction: for nonzero $f$ of degree
+at most $D$,
+\[
+ R_D(f)\equiv D\pmod2,
+\]
+because nonreal roots occur in conjugate pairs. When $D$ is odd and $N$ is
+even, either side of the root-count comparison can incorporate this parity
+improvement. The change from $N$ to $N-1$ alone does not distinguish a new
+mathematical obstruction.
+
+The relevant difference lies in the construction of the bound. Their Lean
+proof of the required finite-sum version \cite{LiCode} translates one node
+to zero, reflects the polynomial, and differentiates. One term becomes
+constant and disappears; induction reduces the number of summands to two.
+In Theorem~\ref{thm:aligned}, the chosen directions instead encode signs,
+and differentiation ends at a positive sum of even powers. Both developments
+use one-variable real polynomials with a degree parameter to account for
+roots at infinity.
+
+\subsection{The even-even construction and formal scope}
+
+The papers \cite{Ma,Li} cite existing even-exponent results. Their source
+repositories have different scopes. Ma's checked repository formalizes the
+odd branch. The checked version of Li et al.'s repository also contains
+the even branch \cite{LiCode}. In its even-even proof, the first root bound
+likewise yields \eqref{eq:rootless-factor}. It then establishes strict sign
+alternation of kernel vectors of a reduced odd-order skew matrix, using an
+explicit tangent-node configuration and a continuous deformation. A polar
+derivative identity yields a contradictory dot product.
+
+Equations~\eqref{eq:skew-pairing}--\eqref{eq:new-alignment} provide the
+alternative used here: the skew identity cancels a leading interpolation
+coefficient, which directly improves the root bound. This is a concrete
+simplification of the auxiliary construction required for this criterion.
+It does not include the separate alternating-kernel theorem proved in
+\cite{LiCode}.
+
+The relationship with prior work is consequently twofold. The odd branch
+belongs to the same root-count family as \cite{Li,Reznick}, while the
+aligned-polynomial formulation and the even-even interpolation construction
+give a compact route through all parameter cases. No priority claim for
+the determinant criterion or the underlying classical root-count principle
+is made.
+
+\section{The accompanying Lean proof}
+
+The complete criterion is formalized in the single file
+\lean{DifferencePowerSingle.lean}, using Lean 4.32.0 and mathlib v4.32.0.
+It contains 958 lines, including comments and blank lines, and imports only
+\lean{Mathlib}. All definitions and lemmas specific to this problem occur
+in that file. Its final declaration is
+\begin{quote}\small\ttfamily\raggedright
+theorem determinant\_ne\_zero\_iff \{N D : $\N$\}\par
+\quad (hN : $2\le N$) (\_hD : $1\le D$)\par
+\quad (x : Fin N $\to\R$) (hx : Function.Injective x) :\par
+\quad (Matrix.det (fun i j : Fin N => (x j - x i)\textasciicircum D)) $\ne0$\par
+\quad $\leftrightarrow$ N $\le$ D+1 $\land$ (Even D $\lor$ Even N)
+\end{quote}
+This is the full biconditional for arbitrary parameters and injective real
+node functions, rather than a statement restricted to examples.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.37\linewidth}p{0.58\linewidth}@{}}
+\toprule
+Mathematical step & Principal Lean declaration \\
+\midrule
+Rank and parity obstructions & \lean{necessary} \\
+Kernel equations give roots & \lean{kernel_gives_roots} \\
+Projective Rolle estimate & \lean{projective_rolle} \\
+Theorem~\ref{thm:aligned} & \lean{root_bound_of_sign_polynomial} \\
+Opposite parities & \lean{kernel_zero_of_opposite_parity} \\
+Equation~\eqref{eq:skew-pairing} & \lean{derivative_pairing_zero} \\
+Even-even interpolation & \lean{kernel_zero_of_even_even} \\
+Theorem~\ref{thm:main} & \lean{determinant_ne_zero_iff} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The code represents a degree-$d$ form by a polynomial in $\R[X]$ and counts
+its finite roots together with the degree deficit at infinity. Translation
+and polynomial reflection implement the coordinate changes needed for
+directional differentiation. The proof of the even-even case uses exactly
+the interpolation data in \eqref{eq:new-data} and the leading-coefficient
+cancellation in \eqref{eq:degree-drop}.
+
+The file was copied to a fresh directory and compiled with a search path
+containing only the pre-existing mathlib and dependency caches. Compilation
+completed successfully. The transitive axiom audit of the final theorem
+reported
+\begin{center}
+\lean{[propext, Classical.choice, Quot.sound]}.
+\end{center}
+There is no unfinished proof placeholder or additional mathematical axiom
+in the development. The source, its verification log, and a SHA-256 manifest
+are supplied with this manuscript. The source is unchanged from the
+verification performed before the subsequent literature comparison.
+
+The checked external source versions were
+\lean{9f57b40c7c} for Ma \cite{MaCode} and \lean{b98c9e55c9} for Li et al.
+\cite{LiCode}. Their repositories were inspected for the comparison above;
+neither complete external project was rebuilt locally for this manuscript.
+Our formal verification claim concerns the accompanying criterion proof,
+not the bibliographical or workflow statements in this paper.
+
+\paragraph{Code and reproducibility.}
+The complete single-file Lean proof, pinned project configuration, original
+verification record, and manuscript sources are available in the public
+repository
+\begin{center}
+\url{https://github.com/HappyAny/colombo-determinant-lean}.
+\end{center}
+The repository also includes this PDF and instructions for checking the
+proof with Lean and mathlib 4.32.0.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{Ma}
+Q. Ma, \emph{Colombo's Determinant Problem}, arXiv:2609.00101v1, 2026.
+\url{https://arxiv.org/abs/2609.00101}.
+The arXiv record cites an earlier Zenodo deposit dated 18 August 2026,
+\url{https://doi.org/10.5281/zenodo.21993537}.
+
+\bibitem{Li}
+K. Li, L. Tie, P. Wang, and Z. Liu,
+\emph{An algebraic proof of Colombo's difference-power determinant conjecture},
+arXiv:2608.28274v1, 2026.
+\url{https://arxiv.org/abs/2608.28274}.
+
+\bibitem{Reznick}
+B. Reznick, \emph{On the length of binary forms},
+arXiv:1007.5485, 2010, Section 3.
+\url{https://arxiv.org/abs/1007.5485}.
+
+\bibitem{MaCode}
+Q. Ma, \emph{Colombo odd-exponent theorem in Lean 4},
+source snapshot \lean{9f57b40c7c}, accessed 6 September 2026.
+\url{https://github.com/hkjtsgmc79-boop/colombo-odd-lean}.
+
+\bibitem{LiCode}
+\emph{Colombo1928}, the Lean repository accompanying \cite{Li},
+source snapshot \lean{b98c9e55c9}, accessed 6 September 2026.
+\url{https://github.com/ttieli/Colombo1928}.
+\end{thebibliography}
+
+\section*{AI assistance and development time}
+
+According to the user's record of the original session, the mathematical
+proof and its Lean formalization were developed in a human-directed
+interactive session using \textbf{GPT-6 Astra}, with reasoning effort set to
+\textbf{max}, in \textbf{approximately 50 minutes}.
+For this original solution-and-formalization phase, \textbf{Codex was the
+sole harness}, \textbf{fast mode was disabled}, and \textbf{no special
+orchestration skills were used}.
+The user-written prompts were brief: solve the supplied problem without
+online search, formalize the proof in Lean, and provide a complete
+single-file derivation. No detailed proof strategy was supplied in those
+prompts; the ordinary Codex instructions and tools remained in use.
+The original problem-solving stage was
+carried out without web searches, using an existing local Lean/mathlib
+installation. The papers and repositories cited above were consulted
+afterwards for comparison and manuscript preparation. The reported
+50-minute duration refers to the original proof-development phase and
+excludes that subsequent literature work and the writing of this paper.
+
+The scope of Astra's training data and prior knowledge is unknown to us,
+including whether related mathematics or texts were present. Prohibiting
+online search during the session does not establish the absence of such
+prior exposure. The timing and workflow observations are therefore
+\textbf{for reference only}, as an uncontrolled case report. This
+qualification concerns provenance and efficiency claims; the mathematical
+criterion is separately supported by the Lean kernel check.
+
+The case raises an open question: as model capabilities improve, does the
+\emph{marginal benefit of additional task-specific orchestration} decrease?
+A stronger model may perform more planning and error correction within
+the model, reducing the need for some external coordination. This single
+session does not establish that trend. Codex still supplied tool execution,
+context management, and access to verification feedback, while Lean checked
+the resulting proof. A useful comparison would vary both model and harness
+on the same tasks under matched resource budgets, and measure verified
+completion and cost over repeated runs.
+
+\textbf{In particular, the mathematical result and its complete Lean proof
+were obtained under an explicit prohibition on online search during the
+original solution and formalization.}
+
+\end{document}

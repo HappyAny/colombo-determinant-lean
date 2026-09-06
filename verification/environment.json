@@ -1,0 +1,18 @@
+{
+  "lean": "4.32.0",
+  "mathlib_tag": "v4.32.0",
+  "mathlib_commit": "81a5d257c8e410db227a6665ed08f64fea08e997",
+  "source_sha256": "fadaff4dbbbdf86a594bddb5472d5f9e5be5edd8deac2afe4f2ba38ae29bb98e",
+  "source_unchanged_from_original_verification": true,
+  "original_verification_date": "2026-09-06",
+  "publication_copy_exit_code": 0,
+  "theorem": "DifferencePowerSingle.determinant_ne_zero_iff",
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "verification_boundary": "Kernel checks concern the mathematical theorem; session timing and provenance remain reported observations.",
+  "lake_configuration_check": "Passed lake --no-build check-build with local cached package path overrides.",
+  "fresh_network_bootstrap_tested": false
+}

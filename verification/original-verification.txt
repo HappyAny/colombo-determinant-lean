@@ -1,0 +1,12 @@
+Independent single-file verification
+Timestamp: 2026-09-06T18:01:47.6795622+08:00
+Source SHA256: fadaff4dbbbdf86a594bddb5472d5f9e5be5edd8deac2afe4f2ba38ae29bb98e
+Only the single Lean source was copied to a fresh temporary directory.
+LEAN_PATH contains only the pre-existing Mathlib and package cache paths.
+No project proof directory or RootCount.olean was supplied.
+Imports: Mathlib
+Lean (version 4.32.0, x86_64-w64-windows-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)
+DifferencePowerSingle.determinant_ne_zero_iff {N D : ℕ} (hN : 2 ≤ N) (_hD : 1 ≤ D) (x : Fin N → ℝ)
+  (hx : Function.Injective x) : (det fun i j => (x j - x i) ^ D) ≠ 0 ↔ N ≤ D + 1 ∧ (Even D ∨ Even N)
+'DifferencePowerSingle.determinant_ne_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+Exit code: 0

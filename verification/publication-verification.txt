@@ -1,0 +1,12 @@
+Publication-copy verification
+Timestamp UTC: 2026-09-06T11:51:32.143125+00:00
+Source SHA256: fadaff4dbbbdf86a594bddb5472d5f9e5be5edd8deac2afe4f2ba38ae29bb98e
+Compiler: Lean 4.32.0
+Mathlib: v4.32.0
+Environment: pre-existing Mathlib and dependency caches; no local proof library supplied.
+
+DifferencePowerSingle.determinant_ne_zero_iff {N D : ℕ} (hN : 2 ≤ N) (_hD : 1 ≤ D) (x : Fin N → ℝ)
+  (hx : Function.Injective x) : (det fun i j => (x j - x i) ^ D) ≠ 0 ↔ N ≤ D + 1 ∧ (Even D ∨ Even N)
+'DifferencePowerSingle.determinant_ne_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+Exit code: 0

@@ -1,0 +1,2 @@
+# Preserve exact published bytes and source-verification hashes on all platforms.
+* -text whitespace=cr-at-eol
