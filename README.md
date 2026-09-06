@@ -50,11 +50,11 @@ and Lean formalization, including the problem image, visible progress updates,
 and final responses. The original exchange was in Chinese; the English version
 was translated afterwards.
 
-The core problem-solving exchange runs from **17:02:08 to 17:52:20 Beijing time
-on 6 September 2026**, an elapsed **50 minutes 12 seconds**. The excerpts end at
-that first complete response. These timestamps describe elapsed conversation
-time. The [provenance manifest](docs/conversation/manifest.json) records the
-message timestamps, hashes, and presentation changes.
+The core problem-solving exchange took **50 minutes 12 seconds** from the
+problem submission to the first complete response, where the excerpts end.
+Time labels show elapsed time from the first retained message. The
+[provenance manifest](docs/conversation/manifest.json) records the relative
+message times, hashes, and presentation changes.
 
 ## Result and artifacts
 

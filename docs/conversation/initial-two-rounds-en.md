@@ -2,7 +2,7 @@
 
 [Chinese original](initial-two-rounds.md)
 
-This is an English translation of an excerpt from the original Codex conversation. It preserves the user prompts, the AI's visible progress updates, and its final responses. The original exchange was in Chinese; this translation was prepared afterwards. The date is **6 September 2026**, and all times below are **Beijing time (UTC+8)**.
+This is an English translation of an excerpt from the original Codex conversation. It preserves the user prompts, the AI's visible progress updates, and its final responses. The original exchange was in Chinese; this translation was prepared afterwards. The date is **6 September 2026**. Time labels show elapsed minutes and seconds from the first message (T+mm:ss), rounded to the nearest second.
 
 The excerpt begins with the initial agreement prohibiting online search and ends with the final response reporting the first complete solution and Lean formalization.
 
@@ -12,8 +12,8 @@ The public edition preserves the wording of the source excerpt with formatting a
 
 | Stage | User submission | AI final response | Elapsed time in the log |
 | --- | --- | --- | --- |
-| Preliminary agreement prohibiting online search | 17:00:57 | 17:01:07 | About 10 seconds |
-| Initial solution and complete Lean formalization (then split across files) | 17:02:08 | 17:52:20 | 50 minutes 12 seconds |
+| Preliminary agreement prohibiting online search | T+00:00 | T+00:10 | About 10 seconds |
+| Initial solution and complete Lean formalization (then split across files) | T+01:11 | T+51:23 | 50 minutes 12 seconds |
 
 The reported "approximately 50 minutes" refers to the initial solution and complete Lean formalization. These are wall-clock intervals from the conversation log, not measurements of model computation time alone.
 
@@ -21,56 +21,56 @@ The reported "approximately 50 minutes" refers to the initial solution and compl
 
 ### Preliminary agreement: no online search
 
-**17:00:57 — HappyAny**
+**T+00:00 — HappyAny**
 
 I will give you a mathematics problem. I would like you to solve it without searching the internet.
 
-**17:01:07 — AI · Final response**
+**T+00:10 — AI · Final response**
 
 Please send the problem. I will respect the **no online search** condition, derive the solution independently, and provide a clear, checkable argument. If any part remains unproved, I will state that explicitly.
 
 ### Solving the problem and formalizing it in Lean
 
-**17:02:08 — HappyAny**
+**T+01:11 — HappyAny**
 
 After finding an approach, remember to formalize the proof in Lean.
 ![Original problem image](initial-problem.jpg)
 
 > Editorial note: The image asks the following question. Given integers $N\ge 2,D\ge 1$, distinct real numbers $x_1,\ldots,x_N$, and the matrix $A_{N,D}(x)=[(x_j-x_i)^D]_{i,j=1}^{N}$, when is its determinant nonzero? This is a translation of the text in the image, not an additional original prompt.
 
-**17:02:14 — AI · Progress update**
+**T+01:17 — AI · Progress update**
 
 I will first derive a necessary and sufficient condition for the determinant to be nonzero, then formalize and check the proof using the local Lean environment, without searching the internet at any point.
 
-**17:03:22 — AI · Progress update**
+**T+02:25 — AI · Progress update**
 
 I have identified two cases in which the determinant must vanish: when $N>D+1$, the rank is insufficient; when both $D$ and $N$ are odd, the matrix is skew-symmetric of odd order. The key remaining question is whether the determinant is nonzero for every choice of distinct real numbers in all other cases.
 
-**17:05:40 — AI · Progress update**
+**T+04:43 — AI · Progress update**
 
 The candidate criterion is that $\det A\ne0$ if and only if $N\le D+1$ and at least one of $D$ and $N$ is even. All 840 small integer test cases agree with it, but they cannot replace a proof of sufficiency. Lean and mathlib are already cached locally, so formalization and checking can proceed offline.
 
-**17:14:31 — AI · Progress update**
+**T+13:34 — AI · Progress update**
 
 I have found a proof approach covering all cases, with the criterion stated above. The key is to use Rolle's theorem to control the number of real roots of a polynomial. In the most difficult case, where both $D$ and $N$ are even, the alternating signs of the kernel vector and the derivative give a contradiction. I am now translating these steps into Lean lemmas.
 
-**17:21:09 — AI · Progress update**
+**T+20:13 — AI · Progress update**
 
 The informal proof is complete. Lean has checked the vanishing of the derivative pairing, the determinant of order two, and several other steps. The projective Rolle lemma with multiplicities, needed for sufficiency in general, is still being formalized. I will distinguish the informal argument from the parts that Lean has actually checked.
 
-**17:29:50 — AI · Progress update**
+**T+28:53 — AI · Progress update**
 
 The key projective Rolle lemma has now passed Lean checking, including the treatment of real-root multiplicities under reciprocal substitution. The general necessary conditions and nonvanishing when $N=D+1$ have also passed. What remains is to connect the sign-control argument to the matrix kernel condition.
 
-**17:42:02 — AI · Progress update**
+**T+41:05 — AI · Progress update**
 
 The real-root bound has now been fully checked by Lean: from an auxiliary polynomial satisfying specified sign conditions, it gives an upper bound on the number of roots of the original polynomial. To simplify the final formal connection, I am constructing this auxiliary polynomial by Lagrange interpolation. Next I will check the theorem giving the full necessary and sufficient condition.
 
-**17:46:17 — AI · Progress update**
+**T+45:20 — AI · Progress update**
 
 The full necessary and sufficient condition has passed the local Lean 4.32.0 check. The main theorem's axiom audit lists only `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx` or additional axioms. I am now organizing the proof, offline reproduction scripts, and verification logs, and saving a knowledge-library snapshot in accordance with your existing convention.
 
-**17:52:20 — AI · Final response**
+**T+51:23 — AI · Final response**
 
 The conclusion is
 $$
