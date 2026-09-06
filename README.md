@@ -1,7 +1,5 @@
 # Colombo's determinant problem: a single-file Lean proof
 
-Author: **HappyAny**.
-
 **This project began with [this WeChat article](https://mp.weixin.qq.com/s/WPqkTamXIVE1wvFoRIaNMA).**
 After reading it, I wanted to try **GPT-6 Astra**, which I expected to be a more
 capable model, and see whether it could **reproduce the mathematical conclusion
