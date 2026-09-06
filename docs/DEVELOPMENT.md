@@ -31,6 +31,7 @@ does not provide a controlled comparison against another model.
 | Special orchestration skills | None used during the original solution and formalization |
 | Task prompts | Brief requests for an offline solution, Lean formalization, and a complete single-file proof |
 | Duration | Approximately 50 minutes, according to the author's session record |
+| Quota usage | Approximately 1–2% of the weekly usage allowance on the 20x plan for this experiment, according to the author's usage observation |
 | Online search | Explicitly prohibited during the original mathematical solution and Lean formalization |
 | Original checking environment | Pre-existing Lean 4.32.0 and mathlib v4.32.0 installation |
 | Model knowledge coverage | Unknown, including the exact training-data scope and possible prior exposure to related work |

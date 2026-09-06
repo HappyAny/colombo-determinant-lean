@@ -15,8 +15,8 @@ artifact had been checked.
 
 ## Environment and AI settings
 
-The original experiment used the following setup. Model settings, prompting, and
-elapsed time are reported from my session record; the included verification logs
+The original experiment used the following setup. Model settings, prompting,
+elapsed time, and quota usage are reported from my session record; the included verification logs
 document the Lean checks. The local shell version below was recorded for this project.
 
 | Item | Setup |
@@ -31,12 +31,13 @@ document the Lean checks. The local shell version below was recorded for this pr
 | Online search | **Explicitly prohibited** during the original mathematical solution and Lean formalization |
 | Lean environment | Pre-existing local **Lean 4.32.0 / mathlib v4.32.0** installation and dependency caches |
 | Reported duration | **Approximately 50 minutes** for the original solution and formalization; later literature comparison, manuscript writing, and publication are excluded |
+| Reported quota usage | Only **approximately 1–2% of the weekly usage allowance on the 20x plan** for this experiment |
 | Formal check | Complete single-file proof compiled successfully; the final theorem uses only `propext`, `Classical.choice`, and `Quot.sound` |
 | Model knowledge coverage | **Unknown**, including its exact training-data coverage and prior exposure to related material |
 
 The expectation that Astra would be more capable motivated this attempt; this
 project does not measure a performance advantage over another model. Because its
-prior knowledge is unknown, the timing and workflow observations are **for
+prior knowledge is unknown, the timing, quota usage, and workflow observations are **for
 reference only**. The mathematical theorem has its own Lean verification record.
 
 ## Result and artifacts
@@ -112,7 +113,7 @@ The supplied PDF was built with Tectonic 0.17.0. The manuscript is in English.
 ## Interpreting the experiment
 
 Astra's training-data and prior-knowledge coverage is unknown. An offline session
-cannot rule out prior exposure to related material. Timing and workflow observations
+cannot rule out prior exposure to related material. Timing, quota usage, and workflow observations
 are therefore **for reference only**, not a controlled benchmark or an assurance of
 model-level originality. The theorem has a separate Lean kernel verification record.
 
