@@ -1,5 +1,7 @@
 # Colombo's determinant problem: a single-file Lean proof
 
+Author: **HappyAny**.
+
 **This project began with [this WeChat article](https://mp.weixin.qq.com/s/WPqkTamXIVE1wvFoRIaNMA).**
 After reading it, I wanted to try **GPT-6 Astra**, which I expected to be a more
 capable model, and see whether it could **reproduce the mathematical conclusion
@@ -27,7 +29,7 @@ document the Lean checks. The local shell version below was recorded for this pr
 | Harness | **Default Codex harness**, with its ordinary instructions and tools; Codex was the sole harness |
 | Fast mode | **Disabled** |
 | Special orchestration skills | **None** during the original solution and formalization |
-| User-written prompts | **Brief**: solve the supplied problem without online search, formalize it in Lean, and provide a complete single-file proof; no detailed proof strategy was supplied |
+| Task prompts | **Brief**: solve the supplied problem without online search, formalize it in Lean, and provide a complete single-file proof; no detailed proof strategy was supplied |
 | Online search | **Explicitly prohibited** during the original mathematical solution and Lean formalization |
 | Lean environment | Pre-existing local **Lean 4.32.0 / mathlib v4.32.0** installation and dependency caches |
 | Reported duration | **Approximately 50 minutes** for the original solution and formalization; later literature comparison, manuscript writing, and publication are excluded |
@@ -116,9 +118,25 @@ cannot rule out prior exposure to related material. Timing and workflow observat
 are therefore **for reference only**, not a controlled benchmark or an assurance of
 model-level originality. The theorem has a separate Lean kernel verification record.
 
-The paper raises, without claiming to settle, whether stronger models reduce the
-marginal value of additional task-specific orchestration. This single case does not
-establish a trend or make the execution and verification environment unnecessary.
+This experiment made me wonder: **as models become more capable, does the marginal
+value of additional harness engineering decrease?** My working hypothesis is that
+some planning, task decomposition, tool selection, and error correction that once
+needed explicit orchestration may increasingly be handled by the model within a
+general-purpose harness. If so, a brief task description and a reliable verification
+loop could be enough for more tasks, reducing the need for custom workflows.
+
+Codex still supplied tool execution, context management, and access to compiler
+feedback in this project; Lean provided an independent check of the resulting proof.
+Those functions were part of the experiment. The possibility I find interesting is
+that stronger models could reduce how much task-specific coordination we need to
+build on top of that foundation. Reliable tools and verification would still have
+a clear role, especially as the tasks we attempt become more demanding.
+
+This is a thought prompted by one session. We did not compare models or harnesses
+under matched conditions, so this repository cannot show that extra orchestration
+would have helped less, or establish a general trend. Testing the idea would require
+repeated runs across models and harness designs on the same tasks, with matched
+resource budgets, measuring verified completion, cost, and failure modes.
 
 ## Related work
 
