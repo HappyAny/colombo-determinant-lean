@@ -1,5 +1,46 @@
 # Colombo's determinant problem: a single-file Lean proof
 
+**This project began with [this WeChat article](https://mp.weixin.qq.com/s/WPqkTamXIVE1wvFoRIaNMA).**
+After reading it, I wanted to try **GPT-6 Astra**, which I expected to be a more
+capable model, and see whether it could **reproduce the mathematical conclusion
+and produce a complete proof using the default Codex harness**. That experiment
+became this repository.
+
+Here, reproduction means obtaining the same determinant criterion together with
+a complete mathematical proof and a checkable, single-file Lean formalization.
+The article motivated my choice of problem. **The AI's original solving and
+formalization stage was explicitly prohibited from using online search.** Reading
+the research papers and comparing their code took place after the original proof
+artifact had been checked.
+
+## Environment and AI settings
+
+The original experiment used the following setup. Model settings, prompting, and
+elapsed time are reported from my session record; the included verification logs
+document the Lean checks. The local shell version below was recorded for this project.
+
+| Item | Setup |
+| --- | --- |
+| Local environment | Windows, x86-64; PowerShell 7.6.5 |
+| Model | GPT-6 Astra |
+| Reasoning effort | max |
+| Harness | **Default Codex harness**, with its ordinary instructions and tools; Codex was the sole harness |
+| Fast mode | **Disabled** |
+| Special orchestration skills | **None** during the original solution and formalization |
+| User-written prompts | **Brief**: solve the supplied problem without online search, formalize it in Lean, and provide a complete single-file proof; no detailed proof strategy was supplied |
+| Online search | **Explicitly prohibited** during the original mathematical solution and Lean formalization |
+| Lean environment | Pre-existing local **Lean 4.32.0 / mathlib v4.32.0** installation and dependency caches |
+| Reported duration | **Approximately 50 minutes** for the original solution and formalization; later literature comparison, manuscript writing, and publication are excluded |
+| Formal check | Complete single-file proof compiled successfully; the final theorem uses only `propext`, `Classical.choice`, and `Quot.sound` |
+| Model knowledge coverage | **Unknown**, including its exact training-data coverage and prior exposure to related material |
+
+The expectation that Astra would be more capable motivated this attempt; this
+project does not measure a performance advantage over another model. Because its
+prior knowledge is unknown, the timing and workflow observations are **for
+reference only**. The mathematical theorem has its own Lean verification record.
+
+## Result and artifacts
+
 For distinct real numbers $x_1,\ldots,x_N$, with integers $N\ge2$ and $D\ge1$,
 let $A_{ij}=(x_j-x_i)^D$. This project proves the complete criterion
 
@@ -68,15 +109,7 @@ tectonic --outdir paper paper/colombo_interpolation.tex
 
 The supplied PDF was built with Tectonic 0.17.0. The manuscript is in English.
 
-## Session note
-
-According to the user's record, the original mathematical solution and complete
-Lean formalization took approximately **50 minutes** with **GPT-6 Astra**, reasoning
-effort **max**, **Codex as the sole harness**, **fast mode disabled**, and **no special
-orchestration skills**. The user-written prompts were brief and did not supply a
-detailed proof strategy. **Online search was explicitly prohibited during that
-original solution and formalization.** Literature comparison, manuscript writing,
-and publication followed afterwards.
+## Interpreting the experiment
 
 Astra's training-data and prior-knowledge coverage is unknown. An offline session
 cannot rule out prior exposure to related material. Timing and workflow observations

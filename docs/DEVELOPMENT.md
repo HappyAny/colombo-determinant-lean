@@ -2,17 +2,38 @@
 
 This note concerns the reported original session, not a controlled model evaluation.
 
+## Motivation and sequence
+
+The project owner was inspired by
+[this WeChat article](https://mp.weixin.qq.com/s/WPqkTamXIVE1wvFoRIaNMA) and wanted
+to try GPT-6 Astra as a model they expected to be more capable. The question was
+whether it could reproduce the mathematical conclusion and produce a complete
+proof, including a single-file Lean formalization, using the default Codex harness.
+That experiment led to this repository.
+
+The human author's inspiration preceded the experiment. The AI's original
+problem-solving and formalization stage was explicitly prohibited from using
+online search. The research-paper and code comparisons were performed after the
+original proof artifact had been checked. These are separate stages.
+
+The expectation of a more capable model describes the motivation. This project
+does not provide a controlled comparison against another model.
+
+## Environment and AI settings
+
 | Item | Record |
 | --- | --- |
+| Local environment | Windows, x86-64; PowerShell 7.6.5 recorded for this project |
 | Model | GPT-6 Astra, as reported by the user |
 | Reasoning effort | max |
-| Harness | Codex only |
+| Harness | Default Codex harness, with ordinary instructions and tools; Codex only |
 | Fast mode | Disabled |
 | Special orchestration skills | None used during the original solution and formalization |
 | User-written prompts | Brief requests for an offline solution, Lean formalization, and a complete single-file proof |
 | Duration | Approximately 50 minutes, as reported by the user |
 | Online search | Explicitly prohibited during the original mathematical solution and Lean formalization |
 | Original checking environment | Pre-existing Lean 4.32.0 and mathlib v4.32.0 installation |
+| Model knowledge coverage | Unknown, including the exact training-data scope and possible prior exposure to related work |
 
 The brief prompts described the task and requested the proof artifact. They did not
 supply a detailed mathematical strategy. This observation concerns the user's task
