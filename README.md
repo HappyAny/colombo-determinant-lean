@@ -16,8 +16,9 @@ artifact had been checked.
 ## Environment and AI settings
 
 The original experiment used the following setup. Model settings, prompting,
-elapsed time, and quota usage are reported from my session record; the included verification logs
-document the Lean checks. The local shell version below was recorded for this project.
+elapsed time, and quota usage are reported from my session record; the included
+verification logs document the Lean checks. The local shell version below was
+recorded for this project.
 
 | Item | Setup |
 | --- | --- |
@@ -27,7 +28,7 @@ document the Lean checks. The local shell version below was recorded for this pr
 | Harness | **Default Codex harness**, with its ordinary instructions and tools; Codex was the sole harness |
 | Fast mode | **Disabled** |
 | Special orchestration skills | **None** during the original solution and formalization |
-| Task prompts | **Brief**: solve the supplied problem without online search, formalize it in Lean, and provide a complete single-file proof; no detailed proof strategy was supplied |
+| Task prompts | **Brief**: solve the supplied problem without online search and formalize it in Lean; no detailed proof strategy was supplied |
 | Online search | **Explicitly prohibited** during the original mathematical solution and Lean formalization |
 | Lean environment | Pre-existing local **Lean 4.32.0 / mathlib v4.32.0** installation and dependency caches |
 | Reported duration | **Approximately 50 minutes** for the original solution and formalization; later literature comparison, manuscript writing, and publication are excluded |
@@ -39,6 +40,21 @@ The expectation that Astra would be more capable motivated this attempt; this
 project does not measure a performance advantage over another model. Because its
 prior knowledge is unknown, the timing, quota usage, and workflow observations are **for
 reference only**. The mathematical theorem has its own Lean verification record.
+
+## Original conversation
+
+Read the [Chinese original](docs/conversation/initial-two-rounds.md) or the
+[English translation](docs/conversation/initial-two-rounds-en.md).
+The excerpts cover the initial no-search agreement and the first complete solution
+and Lean formalization, including the problem image, visible progress updates,
+and final responses. The original exchange was in Chinese; the English version
+was translated afterwards.
+
+The core problem-solving exchange runs from **17:02:08 to 17:52:20 Beijing time
+on 6 September 2026**, an elapsed **50 minutes 12 seconds**. The excerpts end at
+that first complete response. These timestamps describe elapsed conversation
+time. The [provenance manifest](docs/conversation/manifest.json) records the
+message timestamps, hashes, and presentation changes.
 
 ## Result and artifacts
 
